@@ -1,22 +1,23 @@
 // Assignment Code
 let generateBtn = document.querySelector("#generate");
 
+//these are the containers for my possible characters
 const capitals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const lowers = "abcdefghijklmnopqrstuvwxyz"
 const specials = ["\\", ".", "+", "*", "?", "[", "^", "]", "$", "(", ")", "{", "}", "=", "!", "<", ">", "|", ":", "-"];
 const numbers = "1234567890"
-
+//these will generate a random character from their respective sets
 const randomCapital = capitals[Math.floor(Math.random() * capitals.length)];
 const randomLower = lowers[Math.floor(Math.random() * lowers.length)];
 const randomSpecial = specials[Math.floor(Math.random() * specials.length)];
 const randomnumber = numbers[Math.floor(Math.random() * numbers.length)];
-
-let choices = {};
-let trueChoices = [];
-
+//this function will generate the password
 function generatePassword() {
   let passSize = prompt("how many characters would you like your password to be? enter a number")
-  
+  //empty variables to store information later
+  let choices = {};
+  let trueChoices = [];
+  //makes sure the password size is between 8 and 128 characters
   function checkSize() {
     if (passSize < 8 || passSize > 128) {
       confirm("Your password should be between 8 and 128 characters")
@@ -32,66 +33,56 @@ function generatePassword() {
   };
 
   checkSize()
-
+  //prompts for criteria of password 
   let cap = confirm("Would you like any capital letters?")
-  choices["cap"] = cap
+  choices["capital letters"] = cap
 
   let low = confirm("Would you like any lowercase letters?")
-  choices["low"] = low
+  choices["lowercase letters"] = low
 
   let spec = confirm("Would you like any special characters?")
-  choices["spec"] = spec
+  choices["special characters"] = spec
 
   let num = confirm("Would you like any numbers?")
-  choices["num"] = num
+  choices["numbers"] = num
 
+  //stores use selections in an array
   for (let i in choices) {
     if (choices[i] === true) {
       trueChoices.push(i)
-      console.log(trueChoices)
     };
   };
+  alert("you have selected the following criteria: " + trueChoices)
 
+  if (trueChoices.length === 0) {
+    alert("You have not selected any password criteria")
+  };
+  //stores generated array
   let generation = []
-  console.log(passSize)
-
   let passNum = parseInt(passSize)
-  console.log(typeof passNum)
 
+//generates a random choice from users list of choices and then generates a random character from that choice
   for (i = 0; i < passNum; i++) {
     let key = trueChoices[Math.floor(Math.random() * trueChoices.length)]
-    if (key == "cap") {
+    if (key == "capital letters") {
       generation.push(capitals[Math.floor(Math.random() * capitals.length)])
-      console.log("i added a capital")
-    } else if (key == "low") {
+    } else if (key == "lowercase letters") {
       generation.push(lowers[Math.floor(Math.random() * lowers.length)])
-      console.log("i added a lowercase")
-    } else if (key == "spec") {
+    } else if (key == "special characters") {
       generation.push(specials[Math.floor(Math.random() * specials.length)])
-      console.log("i added a special character")
-    } else if (key == "num") {
+    } else if (key == "numbers") {
       generation.push(numbers[Math.floor(Math.random() * numbers.length)])
-      console.log("i added a number")
     }; 
   };
-
+//joins array into string
   let final = generation.join('')
-
+//does nothing if pass size is zero
   if (passSize === 0) {
     return
   }
 
-  if (generation.length === 0) {
-      alert("You have not selected any password criteria")
-  };
-
-  console.log(final)
   return final
 };
-
-generatePassword()
-
-
 
 // Write password to the #password input
 function writePassword() {
@@ -101,6 +92,8 @@ function writePassword() {
   passwordText.value = password;
 
 }
+
+writePassword()
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
